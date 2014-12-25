@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ksyun.emailsms.dto.UserDto" >
+  <resultMap id="BaseResultMap" type="com.ksyun.emailsms.dto.UserDto" >
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="email" jdbcType="VARCHAR" property="email" />
+    <result column="mobile" jdbcType="VARCHAR" property="mobile" />
+  </resultMap>
+
+  <sql id="Base_Column_List" >
+    u.user_id,email,mobile
+  </sql>
+
+  <select id="selectEmailMobile" resultMap="BaseResultMap" parameterType="map" >
+    select distinct 
+    <include refid="Base_Column_List" />
+    from user_info u,product_info p
+    <where>
+	     <!-- <![CDATA[ u.user_id = p.user_id and user_status in (2,4)
+		and region in (#{regions}) and product_type in (#{products}) ]]> -->
+		u.user_id = p.user_id and user_status in (2,4)
+		and region in 
+		<foreach item="item" index="index" collection="regions" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+        and product_type in
+        <foreach item="item" index="index" collection="products" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+	</where>
+  </select>
+
+</mapper>
