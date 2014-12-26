@@ -13,22 +13,29 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.alibaba.fastjson.JSONObject;
 import com.ksyun.emailsms.dto.UserDto;
-import com.ksyun.emailsms.pojo.CallResult;
-import com.ksyun.emailsms.service.EmailAndSmsService;
-import com.ksyun.emailsms.service.JSONService;
+import com.ksyun.emailsms.pojo.EmailStatusPojo;
+import com.ksyun.emailsms.pojo.SmsStatusPojo;
+import com.ksyun.emailsms.service.impl.EmailMobileGetService;
+import com.ksyun.emailsms.service.impl.EmailSendService;
+import com.ksyun.emailsms.service.impl.JSONService;
+import com.ksyun.emailsms.service.impl.SmsSendService;
 import com.ksyun.emailsms.utils.HttpMethod;
 
 @Controller
 public class EmailAndSmsContoller {
 	@Autowired
-	private EmailAndSmsService emailAndSmsService;
+	private EmailMobileGetService emailMobileGetService;
+	
+	@Autowired
+	private EmailSendService emailSendService;
+	
+	@Autowired
+	private SmsSendService smsSendService;
 	
 	@Autowired
 	private JSONService jsonService;
-	private static final String EMAIL_URL = "http://10.0.2.145/mailop/sendpmail";
-	private static final String SMS_URL = "http://10.0.7.1/sms/sendSms";
-	
-	@RequestMapping(value = "/g/emailsms/getEmailSms")
+		
+	@RequestMapping(value = "/g/emailsms/sendEmailSms")
 	public ModelAndView findUserEmailMobile(@RequestParam("region_checkbox") String[] region,@RequestParam("product_checkbox") String[] product,
 			@RequestParam("sendMethod") String sendMethod,@RequestParam("sms_content") String sms_content,@RequestParam("email_subject") String email_subject,
 			@RequestParam("email_content") String email_content,ModelAndView mav)
@@ -56,80 +63,27 @@ public class EmailAndSmsContoller {
 		
 		//获取指定用户的email和mobile
 		List<UserDto> list = new ArrayList<>();
-		list = emailAndSmsService.getUsersEmailSms(regions,products,sendMethod,sms_content,email_subject,email_content);
-		mav.addObject("userDtoList", list);
+		list = emailMobileGetService.getUsersEmailMobile(regions,products,sendMethod,sms_content,email_subject,email_content);
 		
-		/*测试接口*/
-		int count=1;
-		for(UserDto ud:list)
-		{
-			if(count%2==1)
-			{
-				ud.setEmail("bupt_zjj@163.com");
-				ud.setMobile("18911918549");
-			}
-			else
-			{
-				ud.setEmail("372765149@qq.com");
-				ud.setMobile("13121228840");
-			}
-			count++;
-		}
-		
-		//调用邮件发送接口发送邮件
+		//根据发送方式发送信息
+		EmailStatusPojo esp;
+		SmsStatusPojo ssp;
 		if(sendMethod.equals("email"))
 		{
-			for(UserDto user:list)
-			{
-				Map<String,String> map = new HashMap<>();
-				map.put("body", email_content);
-				map.put("format", "html");
-				map.put("receiver", user.getEmail());
-				map.put("sender", "金山云");
-				map.put("subject", email_subject);
-				String requestBody = JSONObject.toJSONString(map);
-				CallResult cr = jsonService.getPo(EMAIL_URL, requestBody, HttpMethod.POST,CallResult.class);
-				System.out.println("Result from mailop: status:"+cr.getStatus()+" message:"+cr.getMessage());
-			}
+			esp = emailSendService.sendEmail(list, regions, products, email_subject, email_content);
 		}
-		//调用短信发送接口发送短信
 		else if(sendMethod.equals("sms"))
 		{
-			for(UserDto user:list)
-			{
-				Map<String,String> map = new HashMap<>();
-				map.put("desNo", user.getMobile());
-				map.put("msg", sms_content);
-				String requestBody = JSONObject.toJSONString(map);
-				CallResult cr = jsonService.getPo(SMS_URL, requestBody, HttpMethod.POST,CallResult.class);
-				System.out.println("Result from mailop: status:"+cr.getStatus()+" message:"+cr.getMessage());
-			}
+			ssp = smsSendService.sendSms(list, regions, products, sms_content);
 		}
-		//同时发送
 		else if(sendMethod.equals("smsAndEmail"))
 		{
-			for(UserDto user:list)
-			{
-				Map<String,String> map = new HashMap<>();
-				map.put("desNo", user.getMobile());
-				map.put("msg", sms_content);
-				String requestBody = JSONObject.toJSONString(map);
-				CallResult cr = jsonService.getPo(SMS_URL, requestBody, HttpMethod.POST,CallResult.class);
-				//System.out.println("Result from mailop: status:"+cr.getStatus()+" message:"+cr.getMessage());
-			}
-			for(UserDto user:list)
-			{
-				Map<String,String> map = new HashMap<>();
-				map.put("body", email_content);
-				map.put("format", "html");
-				map.put("receiver", user.getEmail());
-				map.put("sender", "金山云");
-				map.put("subject", email_subject);
-				String requestBody = JSONObject.toJSONString(map);
-				CallResult cr = jsonService.getPo(EMAIL_URL, requestBody, HttpMethod.POST,CallResult.class);
-				//System.out.println("Result from mailop: status:"+cr.getStatus()+" message:"+cr.getMessage());
-			}
+			esp = emailSendService.sendEmail(list, regions, products, email_subject, email_content);
+			ssp = smsSendService.sendSms(list, regions, products, sms_content);
 		}
+		
+		mav.setViewName("/emailsms/queryResult");
+		mav.addObject("userDtoList", list);//???
 		return mav;
 	}
 }

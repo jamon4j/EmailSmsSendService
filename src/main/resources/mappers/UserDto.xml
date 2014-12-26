@@ -8,16 +8,29 @@
   </resultMap>
 
   <sql id="Base_Column_List" >
-    u.user_id,email,mobile
+    user_id,email,mobile
   </sql>
 
   <select id="selectEmailMobile" resultMap="BaseResultMap" parameterType="map" >
-    select distinct 
+  select <include refid="Base_Column_List" />
+  from user_info where user_id in 
+  (select distinct user_id from product_info 
+  <where>
+   service_status in (2,4) and region in 
+   <foreach item="item" index="index" collection="regions" open="(" separator="," close=")">
+       #{item}
+   </foreach>
+   and product_type in 
+   <foreach item="item" index="index" collection="products" open="(" separator="," close=")">
+       #{item}
+   </foreach>
+   )
+  </where>
+  
+    <!-- select distinct 
     <include refid="Base_Column_List" />
     from user_info u,product_info p
     <where>
-	     <!-- <![CDATA[ u.user_id = p.user_id and user_status in (2,4)
-		and region in (#{regions}) and product_type in (#{products}) ]]> -->
 		u.user_id = p.user_id and user_status in (2,4)
 		and region in 
 		<foreach item="item" index="index" collection="regions" open="(" separator="," close=")">
@@ -27,7 +40,7 @@
         <foreach item="item" index="index" collection="products" open="(" separator="," close=")">
             #{item}
         </foreach>
-	</where>
+	</where> -->
   </select>
 
 </mapper>

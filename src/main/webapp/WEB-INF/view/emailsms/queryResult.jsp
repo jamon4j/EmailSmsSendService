@@ -7,8 +7,8 @@
 <meta charset="UTF-8">
 <title>金山云信息发送平台</title>
 <link rel="shortcut icon" href="html/icon/ksyun.ico" />
-<link href="css/admin.css" rel="stylesheet" type="text/css"/>
-<script type="text/javascript" src="js/admin.js"></script>
+<link href="/css/admin.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="/js/admin.js"></script>
 
 <style type="text/css">
     body {

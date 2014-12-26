@@ -24,9 +24,7 @@ import org.apache.http.params.BasicHttpParams;
 import org.apache.http.params.CoreConnectionPNames;
 import org.apache.http.params.HttpParams;
 
-import com.ksyun.emailsms.pojo.CallResult;
-
-
+import com.ksyun.emailsms.pojo.OpenStackResult;
 
 public class HttpUtils {
     static PoolingClientConnectionManager cm;
@@ -66,7 +64,7 @@ public class HttpUtils {
      * @param requestBody
      * @return
      */
-    public static CallResult post(String url,Map<String,String> header,String requestBody) {
+    public static OpenStackResult post(String url,Map<String,String> header,String requestBody) {
         client = getHttpClient();
         HttpPost post = new HttpPost(url);
         try {
@@ -74,7 +72,7 @@ public class HttpUtils {
             StringEntity stringEntity = new StringEntity(requestBody,"UTF-8");
             post.setEntity(stringEntity);
             HttpResponse response = client.execute(post);
-            CallResult result = getResult(response);
+            OpenStackResult result = getResult(response);
             close();
             return result;
         }catch (IOException e){
@@ -103,7 +101,7 @@ public class HttpUtils {
      * @return
      * @throws java.io.IOException
      */
-    private static CallResult getResult(HttpResponse response) throws IOException {
+    private static OpenStackResult getResult(HttpResponse response) throws IOException {
         HttpEntity entity = response.getEntity();
         String content = null;
         int status = response.getStatusLine().getStatusCode();
@@ -111,7 +109,7 @@ public class HttpUtils {
             content = inputStreamToString(entity.getContent());
         }
         close();
-        CallResult result = new CallResult();
+        OpenStackResult result = new OpenStackResult();
         result.setStatus(status);
         result.setMessage(content);
         return result;
