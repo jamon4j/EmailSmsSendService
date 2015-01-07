@@ -11,7 +11,11 @@ import com.ksyun.emailsms.pojo.BasePo;
 import com.ksyun.emailsms.pojo.OpenStackResult;
 import com.ksyun.emailsms.utils.HttpMethod;
 import com.ksyun.emailsms.utils.HttpUtils;
-
+/**
+ * Author: zhangjiajiang
+ * Date: 14-12-24
+ * Func:openstack api 获取方法
+ */
 @Service
 public class JSONService {
 	 /**
@@ -42,7 +46,7 @@ public class JSONService {
      * 设置的header的map
      */
     private Map<String, String> setHeader() {
-	    Map<String, String> header = new HashMap<>();
+	    Map<String, String> header = new HashMap<String, String>();
 	    header.put("Content-Type", "application/json");
 	    return header;
     }

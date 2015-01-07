@@ -62,28 +62,29 @@ public class EmailAndSmsContoller {
 		}
 		
 		//获取指定用户的email和mobile
-		List<UserDto> list = new ArrayList<>();
+		List<UserDto> list = new ArrayList<UserDto>();
 		list = emailMobileGetService.getUsersEmailMobile(regions,products,sendMethod,sms_content,email_subject,email_content);
 		
 		//根据发送方式发送信息
-		EmailStatusPojo esp;
-		SmsStatusPojo ssp;
+		List<UserDto> emailSendResultList = null;
+		List<UserDto> smsSendResultList = null;
 		if(sendMethod.equals("email"))
 		{
-			esp = emailSendService.sendEmail(list, regions, products, email_subject, email_content);
+			emailSendResultList = emailSendService.sendEmail(list, regions, products, email_subject, email_content);
 		}
 		else if(sendMethod.equals("sms"))
 		{
-			ssp = smsSendService.sendSms(list, regions, products, sms_content);
+			smsSendResultList = smsSendService.sendSms(list, regions, products, sms_content);
 		}
 		else if(sendMethod.equals("smsAndEmail"))
 		{
-			esp = emailSendService.sendEmail(list, regions, products, email_subject, email_content);
-			ssp = smsSendService.sendSms(list, regions, products, sms_content);
+			emailSendResultList = emailSendService.sendEmail(list, regions, products, email_subject, email_content);
+			smsSendResultList = smsSendService.sendSms(list, regions, products, sms_content);
 		}
 		
 		mav.setViewName("/emailsms/queryResult");
-		mav.addObject("userDtoList", list);//???
+		mav.addObject("emailSendResultList", emailSendResultList);
+		mav.addObject("smsSendResultList", smsSendResultList);
 		return mav;
 	}
 }

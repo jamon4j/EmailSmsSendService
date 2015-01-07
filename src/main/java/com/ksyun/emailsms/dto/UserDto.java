@@ -7,7 +7,17 @@ public class UserDto implements DtoInterface{
 	private String email;
 	//用户mobile
 	private String mobile;
-	
+	//信息发送状态
+	private int status;
+		
+	public int getStatus() {
+		return status;
+	}
+
+	public void setStatus(int status) {
+		this.status = status;
+	}
+
 	public long getUserId() {
 		return userId;
 	}

@@ -59,17 +59,81 @@
 </br>
 
 <p>短信正文：</p>
-  <textarea id="sms_content" name="sms_content" cols=40 rows=15></textarea>
+  <textarea id="sms_content" name="sms_content" cols=40 rows=15 ></textarea>
 </br></br>
- 邮件标题： <input id="email_subject" name="email_subject" type="text" size=30/>
+ 邮件标题： <input id="email_subject" name="email_subject" type="text" size=30 readonly=true/>
 <p>邮件正文：</p>
-  <textarea id="email_content" name="email_content" cols=40 rows=15></textarea>
+  <textarea id="email_content" name="email_content" cols=40 rows=15 readonly=true></textarea>
 <p><input type="submit" name="submit" value="发送" onclick="return checkInputText()"><span id="usrErr"></span></p>
 
 </form>
 </div>
 <div id="mainDiv" class="main-frame" style="height:750px">
-
+ <c:if test="${not empty emailSendResultList}">
+ <table class="table" cellpadding="0" cellspacing="0" width="100%" border="0">
+            <colgroup>
+            </colgroup>
+            <thead class="tb-tit-bg">
+            <tr>
+                <th width="30%">
+                    <div class="th-gap">user_id</div>
+                </th>
+                <th width="25%">
+                    <div class="th-gap">email</div>
+                </th>
+                <th width="25%">
+                    <div class="th-gap">mobile</div>
+                </th>
+                <th>
+                    <div class="th-gap">邮件发送结果</div>
+                </th>           
+            </tr>
+            </thead>
+            <tbody>
+            	<c:forEach var="dto" items="${emailSendResultList}" varStatus="status">
+					<tr>
+						<td>${dto.userId} </td>
+						<td>${dto.email} </td>
+						<td>${dto.mobile}</td>
+						<td><c:if test="${dto.status==1}">发送成功</c:if><c:if test="${dto.status==0}">发送失败</c:if></td>					
+					</tr>
+				</c:forEach>
+            </tbody>
+        </table>
+        </c:if>
+        </br></br>
+   <c:if test="${not empty smsSendResultList}">      
+        <table class="table" cellpadding="0" cellspacing="0" width="100%" border="0">
+            <colgroup>
+            </colgroup>
+            <thead class="tb-tit-bg">
+            <tr>
+                <th width="30%">
+                    <div class="th-gap">user_id</div>
+                </th>
+                <th width="25%">
+                    <div class="th-gap">email</div>
+                </th>
+                <th width="25%">
+                    <div class="th-gap">mobile</div>
+                </th>
+                <th>
+                    <div class="th-gap">短信发送结果</div>
+                </th>           
+            </tr>
+            </thead>
+            <tbody>
+            	<c:forEach var="dto" items="${smsSendResultList}" varStatus="status">
+					<tr>
+						<td>${dto.userId} </td>
+						<td>${dto.email} </td>
+						<td>${dto.mobile}</td>
+						<td><c:if test="${dto.status==1}">发送成功</c:if><c:if test="${dto.status==0}">发送失败</c:if></td>					
+					</tr>
+				</c:forEach>
+            </tbody>
+        </table>
+      </c:if>
 </div>
 </body>
 </html>

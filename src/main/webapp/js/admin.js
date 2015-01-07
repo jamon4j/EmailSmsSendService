@@ -1,3 +1,40 @@
+
+function setChange()
+{
+	var sendMethod = document.queryForm.sendMethod.value;
+    if(sendMethod == "sms")
+    {
+    	var email_subject = document.getElementById("email_subject");
+    	document.getElementById("email_subject").readOnly=true;
+    	var email_content = document.getElementById("email_content");
+    	document.getElementById("email_content").readOnly=true;
+    	var sms_content = document.getElementById("sms_content");
+    	document.getElementById("sms_content").readOnly=false;
+    }
+    
+    if(sendMethod == "email")
+    {
+    	var email_subject = document.getElementById("email_subject");
+    	document.getElementById("email_subject").readOnly=false;
+    	var email_content = document.getElementById("email_content");
+    	document.getElementById("email_content").readOnly=false;
+    	var sms_content = document.getElementById("sms_content");
+    	document.getElementById("sms_content").readOnly=true;
+    }
+    
+    if(sendMethod == "smsAndEmail")
+    {
+    	var email_subject = document.getElementById("email_subject");
+    	document.getElementById("email_subject").readOnly=false;
+    	var email_content = document.getElementById("email_content");
+    	document.getElementById("email_content").readOnly=false;
+    	var sms_content = document.getElementById("sms_content");
+    	document.getElementById("sms_content").readOnly=false;
+    }
+}
+
+
+
 //复选框全选与反选
 function selectAll()
 {

@@ -7,7 +7,7 @@ import com.ksyun.emailsms.pojo.SmsStatusPojo;
 
 public interface ISmsSendService {
 	
-	public SmsStatusPojo sendSms(List<UserDto> list,List<String> regions,
+	public List<UserDto> sendSms(List<UserDto> list,List<String> regions,
 			List<Integer> products,String sms_content);
 	
 }

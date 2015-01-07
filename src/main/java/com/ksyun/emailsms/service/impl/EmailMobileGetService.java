@@ -12,6 +12,11 @@ import com.ksyun.emailsms.dto.UserDto;
 import com.ksyun.emailsms.pojo.UserPojo;
 import com.ksyun.emailsms.service.IEmailMobileGetService;
 
+/**
+ * Author: zhangjiajiang
+ * Date: 14-12-25
+ * Func:根据选择的产品及产品所在地区,查询目标用户的email和电话号码
+ */
 @Service
 public class EmailMobileGetService implements IEmailMobileGetService{
 	@Autowired

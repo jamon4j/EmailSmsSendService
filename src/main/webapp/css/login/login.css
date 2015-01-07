@@ -1,0 +1,67 @@
+html {
+	height: 100%;
+}
+
+body {
+	font: normal 14px/1.4 "Helvetica Neue", "HelveticaNeue", Helvetica,
+		Arial, sans-serif;
+	font-size: 12px;
+	background: #2C4762 url('/html/images/background.png') top repeat-x;
+}
+
+div {
+	display: block;
+}
+
+button {
+	float: left;
+	margin: 5px 20px;
+}
+
+.container {
+	overflow: hidden !important;
+	text-align: left;
+	position: relative;
+	width: 28%;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+.div-center {
+	text-align: center;
+	margin: 0 auto;
+}
+
+span,input {
+	clear: both;
+	margin: 5px 0;
+}
+
+h2 {
+	margin-top: 120px;
+	color: white;
+    background: url('/html/images/logo.png') 10px center no-repeat;
+    padding: 0 15px 0 20px;
+    font-size:28px;line-height:40px
+}
+
+.ui-widget-overlay {
+	background: #333333;
+	opacity: .5;
+	filter: Alpha(Opacity = 50);
+}
+
+#form-signin,#form-lostpassword {
+	vertical-align: middle;
+	max-width: 100%;
+	padding: 19px 29px 49px;
+	border-top: 1px solid #999999;
+	border-bottom: 1px solid #999999;
+	-webkit-box-shadow: 0 1px 2px rgba(0, 0, 0, .05);
+	-moz-box-shadow: 0 1px 2px rgba(0, 0, 0, .05);
+	box-shadow: 0 1px 2px rgba(0, 0, 0, .05);
+}
+
+#form-lostpassword {
+	display: none;
+}
